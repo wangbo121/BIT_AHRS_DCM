@@ -22,47 +22,39 @@ typedef unsigned int		uint32_t;
 
 struct T_AHRS_INPUT
 {
+	float ina_acc0;
 	float ina_acc1;		//x?ò￡?μ￥???a?×/??^2
 	float ina_acc2;		//y?ò
-	float ina_acc3;		//z?ò
+
+
+	float ina_gyro0;
 	float ina_gyro1;	//x?á￡?μ￥???a?è/??
 	float ina_gyro2;	//y?á
-	float ina_gyro3;	//z?á
+
+
+	unsigned char gps_valid;
+
 	float gps_latti;	//GPS?3?è￡?μ￥???a?è
 	float gps_longi;	//GPS?-?è
 	float gps_high;		//GPS???è￡?μ￥???a?×
 	float gps_velN;		//GPS±±?ò?ù?è￡??×/??
 	float gps_velE;		//GPS???ò?ù?è
 	float gps_velD;		//GPS???ò?ù?è
-	float gps_angle;	//GPSo??ò??￡?μ￥???a?è
+	float gps_speed;//ground speed [km/h]
+	float gps_course_angle_rad;
 	unsigned char gps_satelnum;		//?àD?êy
 	float gps_pdop;		//PDOP?μ
-
-	unsigned char gps_valid;
-
-	float true_roll;		//μ￥???a?è
-	float true_pitch;
-	float true_yaw;
-	float true_latti;		//INSoíGPS×?o?oóμ??3?è￡?μ￥???a?è
-	float true_longi;		//INSoíGPS×?o?oóμ??-?è￡?μ￥???a?è
-
-	int   waittime;			//μè′y′??D?÷??è??è?¨μ?ê±??￡???è?3000￡?μ￥???a??
-	int   starttime;		//????μ?ê?á2ê±??￡???è?1200￡?μ￥???a??
-
-	int algtime;			// 对准时间,单位为采样周期,不能小于1 ,至少有一针GPS有效的数据,
-
-	float true_velN;
-	float true_velE;
-	float true_velD;
-	float true_high;
-
 };
 
 struct T_AHRS_OUTPUT
 {
-	float true_roll;
-	float true_pitch;
-	float true_yaw;
+	float roll_rad;
+	float pitch_rad;
+	float yaw_rad;
+
+	float roll_deg;
+	float pitch_deg;
+	float yaw_deg;
 };
 
 #define _G_Dt          0.02    //20ms处理一次
@@ -83,9 +75,11 @@ private:
 	 * 获取角速度和加速度
 	 */
 	//刘 获取陀螺的数据
-	void get_gyro();
+	void get_gyro(float gyro_x, float gyro_y, float gyro_z);
 	//刘 获取加速度计的数据
-	void get_accel();
+	void get_accel(float accel_x, float accel_y, float accel_z);
+	//获取gps的course angle和地速ground speed
+	void get_gps(float gps_course_deg, float gps_speed);
 	//刘 向心加速度补偿
 	void accel_adjust();
 
@@ -108,23 +102,21 @@ private:
 	T_AHRS_INPUT input;
 	T_AHRS_OUTPUT output;
 
-	char problem=0;  // 调试用的
+	unsigned char renorm_has_problem=false;
 
+	float roll,yaw,pitch;
 	float _gyro_vector[3];
 	float _accel_vector[3];
 	float _omega[3],_omega_integ_corr[3],_omega_P[3],_omega_I[3];
-
 	float _dcm_matrix[3][3]={{1,0,0},{0,1,0},{0,0,1}}; //姿态矩阵
 
-	int   gyro_sat_count,renorm_sqrt_count,renorm_blowup_count;
-	float _centripetal=1,_health;
+	int gyro_sat_count;
+	int renorm_sqrt_count;
+	int renorm_blowup_count;
+	unsigned char _centripetal=1;
 
-
-	float roll,yaw,pitch;
-
-	float vels1=3.6;//添加的
 	float course_angle_rad;
-	float PlaneYaw1;
+	//float PlaneYaw1;
 };
 
 #endif /* BIT_AHRS_DCM_H_ */

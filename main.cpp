@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
+#include <iostream>
 
 #include "BIT_AHRS_DCM.h"
 
@@ -8,7 +6,7 @@ int main()
 {
 	BIT_AHRS_DCM ahrs;
 
-	printf("hello BIT_AHRS_DCM\n");
+	std::cout<<"hello BIT_AHRS_DCM"<<std::endl;
 	ahrs.update_attitude();
 
 	return 0;

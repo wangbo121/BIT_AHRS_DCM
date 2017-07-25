@@ -1,15 +1,10 @@
-
 #ifndef _MATRIX_H_
-
 #define _MATRIX_H_
 
 #include <stdio.h>
 #include <math.h>
 
-
-
-/*operatings for vectors*/
-
+/* operating for vector */
 //test for equality
 char eauality_check(float *vector1,float *vector2)
 {
@@ -65,7 +60,6 @@ void vector_sub(float *vector1,float *vector2,float *out_vector)
 	}
 } 
 
-//
 //dot product
 float vector_dot(float *vector1,float *vector2)
 {
@@ -108,8 +102,7 @@ void normalize(float *vector1,float *out_vector)
 	}
 }
 
-
-/*operating for matrix*/
+/* operating for matrix */
 //matrix add
 void matrix_add(float matrix1[3][3],float matrix2[3][3],float out_matrix[3][3])
 {
