@@ -20,11 +20,8 @@ typedef unsigned short int	uint16_t;
 typedef unsigned int		uint32_t;
 #endif
 
-typedef struct tagAHRS
+struct T_AHRS_INPUT
 {
-	//x?ò?a·é?úóò?ò￡?y?ò?a·é?ú?úí·???ò￡?z?ò?aé??ò￡?
-	//gyro?ú×?óòê??¨?ò?a?y￡?
-	//acc?a￡?±èè??2?1μ???á|?ó?ù?è￡??òacc3?a+9.8
 	float ina_acc1;		//x?ò￡?μ￥???a?×/??^2
 	float ina_acc2;		//y?ò
 	float ina_acc3;		//z?ò
@@ -41,9 +38,7 @@ typedef struct tagAHRS
 	unsigned char gps_satelnum;		//?àD?êy
 	float gps_pdop;		//PDOP?μ
 
-	unsigned char gps_valid;	//?a1ê±±íê?GPSêy?Yà′á?￡??1?′??DDcalman filter
-					//?a0ê±±íê??éêy?Y￡?ò??-??DD1ycalman filter′|àí1yá?
-					//êμ?êé?￡????μ?aê?μ?gpsμ?latti?￠longiμ?D??￠ê±￡?óé?÷3ìDò??±???1￡?óé×?ì??a??oˉêy??0
+	unsigned char gps_valid;
 
 	float true_roll;		//μ￥???a?è
 	float true_pitch;
@@ -61,9 +56,15 @@ typedef struct tagAHRS
 	float true_velD;
 	float true_high;
 
-} T_AHRS;
+};
 
-#define OUTPUTMODE     1       //调试用
+struct T_AHRS_OUTPUT
+{
+	float true_roll;
+	float true_pitch;
+	float true_yaw;
+};
+
 #define _G_Dt          0.02    //20ms处理一次
 #define _kp_roll_pitch 0.05967
 #define _ki_roll_pitch 0.00001278
@@ -104,7 +105,8 @@ private:
 
 	void set(float &v) { roll = v; }
 
-	T_AHRS alldata;
+	T_AHRS_INPUT input;
+	T_AHRS_OUTPUT output;
 
 	char problem=0;  // 调试用的
 

@@ -11,7 +11,6 @@ int main()
 	printf("hello BIT_AHRS_DCM\n");
 	ahrs.update_attitude();
 
-
 	return 0;
 }
 

@@ -13,16 +13,16 @@
 
 void BIT_AHRS_DCM::get_gyro()
 {
-	_gyro_vector[0]=-(M_PI/180)*alldata.ina_gyro2;
-	_gyro_vector[1]=-(M_PI/180)*alldata.ina_gyro1;
-	_gyro_vector[2]=-(M_PI/180)*alldata.ina_gyro3;
+	_gyro_vector[0]=-(M_PI/180)*input.ina_gyro2;
+	_gyro_vector[1]=-(M_PI/180)*input.ina_gyro1;
+	_gyro_vector[2]=-(M_PI/180)*input.ina_gyro3;
 
 }
 void BIT_AHRS_DCM::get_accel()
 {
-	_accel_vector[0]=-alldata.ina_acc2;
-	_accel_vector[1]=-alldata.ina_acc1;
-	_accel_vector[2]=-alldata.ina_acc3;
+	_accel_vector[0]=-input.ina_acc2;
+	_accel_vector[1]=-input.ina_acc1;
+	_accel_vector[2]=-input.ina_acc3;
 
 }
 /*
@@ -61,7 +61,7 @@ void BIT_AHRS_DCM::matrix_update()
 
 	if(_centripetal){accel_adjust();} //这块的条件什么时候满足？？
 
-  #if OUTPUTMODE == 1
+  #if 1
 	  tmp = _G_Dt*_omega[0];
 	  update_matrix[1][2]  = -tmp;
 	  update_matrix[2][1]  = tmp;
@@ -265,16 +265,16 @@ void BIT_AHRS_DCM::euler_angles() //刘
 	yaw   =atan2(_dcm_matrix[1][0],_dcm_matrix[0][0]);
 #endif
 
-	alldata.true_roll =roll*(180/M_PI);          //刘 输出的是 度
-	alldata.true_pitch=pitch*(180/M_PI);
-	alldata.true_yaw  =yaw*(180/M_PI);
+	output.true_roll =roll*(180/M_PI);          //刘 输出的是 度
+	output.true_pitch=pitch*(180/M_PI);
+	output.true_yaw  =yaw*(180/M_PI);
 
 
 }
 
 void BIT_AHRS_DCM::update_attitude(void) //刘 姿态更新
 {
-#if 0
+#if 1
     //PlaneYaw1=0; //刘 用于静态模式的测试
     //vels1=0;
 
